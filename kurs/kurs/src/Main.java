@@ -1,4 +1,4 @@
-import javax.sound.midi.Soundbank;
+
 import java.util.function.Function;
 
 public class Main {
@@ -73,10 +73,10 @@ public class Main {
         K = 39.24;
         double[] YP = new double[NEQN];
         double T = 0.0;
-        double TOUT = 0.4;
+        double TOUT = 4.0;
         double RELERR_ = 0.0001;
         double ABSERR_ = 0.0001;
-        double H = 0.1;
+        double H = 0.01;
         int NFE = 0;
         int MAXNFE = 5000;
         int IFLAG = 1;
@@ -84,16 +84,17 @@ public class Main {
         FuncInterf system = new Eqn(K, M, L, g);
 
         System.out.println("RKF45");
-        System.out.println(String.format("\t %5s \t %7s \t %8s \t %6s", "Step", "z1", "z2", "flag"));
+        System.out.println(String.format("\t %5s \t %7s \t %8s \t %6s", "Step", "y1", "y2", "flag"));
 
         for (int i = 0; i < 41; i++) {
             RKF45 rkf45 = new RKF45(
-                    system, NEQN, y, YP, T, TOUT, RELERR, ABSERR, H, NFE, MAXNFE, IFLAG
+                    system, NEQN, y, YP, T, TOUT, RELERR_, ABSERR_, H, NFE, MAXNFE, IFLAG
             );
             rkf45.complete();
+
             System.out.println(String.format(
                     "%10.2f %s %10.6f %s %10.6f %s\t %d",
-                    T, "|", y[0], "|", y[1], "|", IFLAG)
+                    T, "|", y[1], "|", y[3], "|", IFLAG)
             );
             T += H;
         }
